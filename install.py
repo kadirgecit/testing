@@ -266,6 +266,9 @@ if __name__ == "__main__":
                     if raw_input("  ").upper() == "Y":
                         phpmyadmin()
                     else:printc("phpMyAdmin skipped")
+                    os.system("clear")
+                    print logo
+                    print " "
                     printc("Install GPU Transcoding? Y/N")
                     if raw_input("  ").upper() == "Y":
                         qsv()
