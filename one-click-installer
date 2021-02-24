@@ -1,0 +1,11 @@
+#!/bin/sh
+### Copyright 2021. XtreamPlus Team. All rights reserved.
+echo ""
+echo "XtreamPlus Command Line Installer"
+echo "Preparing..."
+echo "Installing Components..."
+sudo apt-get update
+apt-get install libxslt1-dev libcurl3 libgeoip-dev python git -y
+wget https://raw.githubusercontent.com/kadirgecit/testing/main/install.py
+sudo python install.py
+sudo rm install.py
