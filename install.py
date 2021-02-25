@@ -165,7 +165,7 @@ def phpmyadmin():
     print " "
     printc("Installing phpmyadmin")
     os.system("apt-get install phpmyadmin -y > /dev/null")
-    os.system("sudo ln -s /usr/share/phpmyadmin /home/xtreamcodes/iptv_xtream_codes/admin")
+    os.system("sudo ln -s /usr/share/phpmyadmin /home/xtreamcodes/iptv_xtream_codes/admin/phpmyadmin")
 
 def qsv():
     os.system("clear")
