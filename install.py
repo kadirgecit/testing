@@ -291,4 +291,4 @@ if __name__ == "__main__":
                 else: printc("Installation cancelled", col.FAIL)
             else: printc("Invalid entries", col.FAIL)
         else: printc("Invalid installation type", col.FAIL)
-    else:printc("Invalid license.", col.FAIL)
+    else:printc("Invalid license.", col.FAIL) 
