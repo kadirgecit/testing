@@ -145,9 +145,6 @@ def mysql(rUsername, rPassword):
             try: os.remove("/home/xtreamcodes/iptv_xtream_codes/database.sql")
             except: pass
             return True
-        os.system("clear")
-        print logo
-        print " "
         except: printc("Invalid password! Try again", col.FAIL)
     return False
 
