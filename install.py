@@ -145,9 +145,6 @@ def mysql(rUsername, rPassword):
             try: os.remove("/home/xtreamcodes/iptv_xtream_codes/database.sql")
             except: pass
             return True
-        os.system("clear")
-        print logo
-        print " "
         except: printc("Invalid password! Try again", col.FAIL)
     return False
 
@@ -175,9 +172,8 @@ def qsv():
     print logo
     print " "
     printc("Detecting GPU Hardware")
-    if 
-    printc("Installing Flusonic Intel QSV")
-    os.system("apt-get install linux-base flussonic-qsv -y > /dev/null")
+    printc("Skipping for now...")
+    #os.system("apt-get install linux-base flussonic-qsv -y > /dev/null")
     #os.system("sudo ln -s /usr/share/phpmyadmin /home/xtreamcodes/iptv_xtream_codes/admin > /dev/null")
 
 def configure():
