@@ -4,9 +4,11 @@ clear
 echo ""
 echo "XtreamPlus Command Line Installer"
 echo "Preparing..."
-echo "Installing Components..."
 sudo apt-get update > /dev/null
+echo "Installing Components..."
 apt-get install libxslt1-dev libcurl3 libgeoip-dev python git -y > /dev/null
+echo "Starting Installer..."
 wget -q https://raw.githubusercontent.com/kadirgecit/testing/main/install_new.py 
 sudo python install_new.py
+echo "Removing old packages..."
 sudo rm install_new.py
