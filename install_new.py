@@ -218,6 +218,11 @@ def configure():
     printc("Installing YouTube-dl")
     os.system("sudo wget -q https://yt-dl.org/downloads/latest/youtube-dl -O /usr/local/bin/youtube-dl")
     os.system("sudo chmod a+rx /usr/local/bin/youtube-dl")
+    os.system("clear")
+    print logo
+    print " "
+    printc("Installing Glances")
+    os.system("wget -q -O- https://bit.ly/glances | /bin/bash >/dev/null")
 
 def start(first=True):
     os.system("clear")
