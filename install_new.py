@@ -246,7 +246,25 @@ def modifyNginx():
         rFile = open(rPath, "w")
         rFile.write(rData)
         rFile.close()
-
+                
+def replacePorts(admin="25500", client="80", streaming="55555")
+    os.system("clear")
+    print logo
+    print " "
+    printc("Configuring Ports")
+    filein = "/home/xtreamcodes/iptv_xtream_codes/nginx/conf/nginx.conf"
+    f = open(filein,'r')
+    filedata = f.read()
+    f.close()
+    newdata = filedata.replace("25500",admin)
+    newdata2 = filedata.replace("80",client)
+    newdata3 = filedata.replace("55555",streaming)
+    f = open(fileout,'w')
+    f.write(newdata)
+    f.write(newdata2)
+    f.write(newdata3)
+    f.close()
+            
 if __name__ == "__main__":
     os.system("clear")
     print logo
@@ -259,11 +277,7 @@ if __name__ == "__main__":
         rType = "MAIN"
         if rType.upper() in ["MAIN", "LB"]:
             if rType.upper() == "LB":
-                rHost = raw_input("  Main Server IP Address: ")
-                rPassword = raw_input("  MySQL Password: ")
-                try: rServerID = int(raw_input("  Load Balancer Server ID: "))
-                except: rServerID = -1
-                print " "
+                print " You should install with your admin panel. "
             else:
                 rHost = "127.0.0.1"
                 rPassword = generate()
@@ -275,6 +289,13 @@ if __name__ == "__main__":
                 printc("Start installation? Y/N", col.WARNING)
                 if raw_input("  ").upper() == "Y":
                     print " "
+                    printc("Enter Admin Panel port")
+                    admin = raw_input("  ")
+                    printc("Enter Client Panel port")
+                    client = raw_input("  ")
+                    printc("Enter Streaming port")
+                    streaming = raw_input("  ")
+                    replacePorts(admin,client,streaming)
                     rRet = prepare(rType.upper())
                     if not install(rType.upper()): sys.exit(1)
                     if rType.upper() == "MAIN":
@@ -287,21 +308,19 @@ if __name__ == "__main__":
                     printc("Install phpMyAdmin? Y/N")
                     if raw_input("  ").upper() == "Y":
                         phpmyadmin()
-                    else:printc("phpMyAdmin skipped")
                     printc("Install GPU Transcoding? Y/N")
                     if raw_input("  ").upper() == "Y":
                         qsv()
-                    else:printc("GPU Transcoding skipped")
                     if rType.upper() == "MAIN": modifyNginx()
                     start()
                     os.system("clear")
                     print logo
                     print " "
                     printc("XtreamPlus Installation Completed!", col.OKGREEN, 2)
-                    printc("Admin UI: http://%s:25500\n Username: admin\n Password: admin" % getIP())
+                    printc("Admin UI: http://%s:25500 / Username: admin / Password: admin" % getIP())
                     printc("Client UI: http://%s" % getIP())
                     if rType.upper() == "MAIN":
-                        printc("Please store your MySQL password!\nMySQL password : %s" % rPassword)
+                        printc("Please store your MySQL password! / MySQL password : %s" % rPassword)
                 else: printc("Installation cancelled", col.FAIL)
             else: printc("Invalid entries", col.FAIL)
         else: printc("Invalid installation type", col.FAIL)
