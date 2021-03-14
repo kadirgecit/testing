@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import subprocess, os, random, string, sys, shutil, socket
+import subprocess, os, random, string, sys, shutil, socket, time
 from itertools import cycle, izip
 
 rDownloadURL = {"main": "https://www.dropbox.com/s/6zrfs5v0pxsnoy9/xtreamplus_base.tar.gz?dl=0", "sub": "https://www.dropbox.com/s/rv5k3l1yt2v6ccy/sub_xtreamcodes_reborn.tar.gz?dl=0"}
@@ -20,6 +20,16 @@ class col:
     UNDERLINE = '\033[4m'
 
 def generate(length=16): return ''.join(random.choice(string.ascii_letters + string.digits) for i in range(length))
+
+def progress(count, total, suffix=''):
+    bar_len = 60
+    filled_len = int(round(bar_len * count / float(total)))
+
+    percents = round(100.0 * count / float(total), 1)
+    bar = '=' * filled_len + '-' * (bar_len - filled_len)
+
+    sys.stdout.write('[%s] %s%s ...%s\r' % (bar, percents, '%', suffix))
+    sys.stdout.flush()
 
 def getIP():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -246,8 +256,8 @@ def modifyNginx():
         rFile = open(rPath, "w")
         rFile.write(rData)
         rFile.close()
-                
-def replacePorts(admin="25500", client="80", streaming="55555")
+
+def replacePorts(admin="25500", client="80", streaming="55555"):
     os.system("clear")
     print logo
     print " "
@@ -295,7 +305,12 @@ if __name__ == "__main__":
                     client = raw_input("  ")
                     printc("Enter Streaming port")
                     streaming = raw_input("  ")
-                    replacePorts(admin,client,streaming)
+                    total = 1000
+                    i = 0
+                    while i < total:
+                        progress(i, total, status='Progress:')
+                        time.sleep(0.5)
+                        i += 1
                     rRet = prepare(rType.upper())
                     if not install(rType.upper()): sys.exit(1)
                     if rType.upper() == "MAIN":
@@ -312,6 +327,7 @@ if __name__ == "__main__":
                     if raw_input("  ").upper() == "Y":
                         qsv()
                     if rType.upper() == "MAIN": modifyNginx()
+                    replacePorts(admin,client,streaming)
                     start()
                     os.system("clear")
                     print logo
