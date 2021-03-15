@@ -40,6 +40,25 @@ def printc(rText, rColour=col.OKBLUE, rPadding=0):
 
 def prepare(rType="MAIN"):
     global rPackages
+    animation = [
+    "[        ]",
+    "[=       ]",
+    "[===     ]",
+    "[====    ]",
+    "[=====   ]",
+    "[======  ]",
+    "[======= ]",
+    "[========]",
+    "[ =======]",
+    "[  ======]",
+    "[   =====]",
+    "[    ====]",
+    "[     ===]",
+    "[      ==]",
+    "[       =]",
+    "[        ]",
+    "[        ]"
+    ]
     if rType <> "MAIN": rPackages = rPackages[:-1]
     printc("Preparing Installation")
     for rFile in ["/var/lib/dpkg/lock-frontend", "/var/cache/apt/archives/lock", "/var/lib/dpkg/lock"]:
@@ -56,7 +75,14 @@ def prepare(rType="MAIN"):
         print logo
         print " "
         printc("Installing %s" % rPackage)
-        os.system("apt-get install %s -y > /dev/null" % rPackage)
+        notcomplete = True
+        i = 0
+        while notcomplete:
+            print(animation[i % len(animation)], end='\r')
+            os.system("apt-get install %s -y > /dev/null" % rPackage)
+            notcomplete = False
+            time.sleep(.1)
+            i += 1
     os.system("clear")
     print logo
     print " " 
