@@ -184,7 +184,7 @@ def configure():
     if not " xtream-codes.com" in open("/etc/hosts").read(): os.system('echo "127.0.0.1    xtream-codes.com" >> /etc/hosts')
 
     printc("Checking last updates...")
-    os.system('apt-get install unzip e2fsprogs python-paramiko -y && chown -R xtreamcodes:xtreamcodes /home/xtreamcodes/ && chmod +x /home/xtreamcodes/iptv_xtream_codes/permissions.sh && /home/xtreamcodes/iptv_xtream_codes/permissions.sh && find /home/xtreamcodes/ -type d -not \( -name .update -prune \) -exec chmod -R 777 {} +')
+    os.system('apt-get install unzip e2fsprogs python-paramiko -y >/dev/null && chown -R xtreamcodes:xtreamcodes /home/xtreamcodes/ >/dev/null && chmod +x /home/xtreamcodes/iptv_xtream_codes/permissions.sh && /home/xtreamcodes/iptv_xtream_codes/permissions.sh && find /home/xtreamcodes/ -type d -not \( -name .update -prune \) -exec chmod -R 777 {} +')
     os.system("sed -i 's|echo \"XtreamPlus\";|header(\"Location: https://www.google.com/\");|g' /home/xtreamcodes/iptv_xtream_codes/wwwdir/index.php")
 
     printc("Installing YouTube-dl")
@@ -248,12 +248,12 @@ if __name__ == "__main__":
                     client = raw_input("  ")
                     printc("Enter Streaming port")
                     streaming = raw_input("  ")
-                    #rRet = prepare(rType.upper())
-                    #if not install(rType.upper()): sys.exit(1)
-                    #if rType.upper() == "MAIN":
-                        #if not mysql(rUsername, rPassword): sys.exit(1)
-                    #encrypt(rHost, rUsername, rPassword, rDatabase, rServerID, rPort)
-                    #configure()
+                    rRet = prepare(rType.upper())
+                    if not install(rType.upper()): sys.exit(1)
+                    if rType.upper() == "MAIN":
+                        if not mysql(rUsername, rPassword): sys.exit(1)
+                    encrypt(rHost, rUsername, rPassword, rDatabase, rServerID, rPort)
+                    configure()
                     os.system("clear")
                     print logo
                     print " "
