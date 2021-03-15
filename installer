@@ -7,9 +7,6 @@ echo "Preparing..."
 sudo apt-get update > /dev/null
 echo "Installing Components..."
 apt-get install libxslt1-dev libcurl3 libgeoip-dev python git -y > /dev/null
-wget -q https://bootstrap.pypa.io/pip/2.7/get-pip.py
-python get-pip.py
-pip install tqdm
 echo "Starting Installer..."
 wget -q https://raw.githubusercontent.com/kadirgecit/testing/main/install_new.py 
 sudo python install_new.py
