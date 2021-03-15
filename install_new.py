@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 import subprocess, os, random, string, sys, shutil, socket
 from itertools import cycle, izip
+from tqdm import tqdm
+from time import sleep
 
 rDownloadURL = {"main": "https://www.dropbox.com/s/swerq92o4ip5ngu/iptv_xtream_codes.tar.gz?dl=0", "sub": "0"}
 rPackages = ["libcurl3", "libxslt1-dev", "libgeoip-dev", "e2fsprogs", "wget", "mcrypt", "nscd", "htop", "zip", "unzip", "mc", "mysql-server"]
@@ -70,9 +72,6 @@ def prepare(rType="MAIN"):
         subprocess.check_output("getent passwd xtreamcodes > /dev/null".split())
     except:
         # Create User
-        os.system("clear")
-        print logo
-        print " "
         printc("Creating user xtreamcodes")
         os.system("adduser --system --shell /bin/false --group --disabled-login xtreamcodes > /dev/null")
     if not os.path.exists("/home/xtreamcodes"): os.mkdir("/home/xtreamcodes")
@@ -80,9 +79,6 @@ def prepare(rType="MAIN"):
 
 def install(rType="MAIN"):
     global rInstall, rDownloadURL
-    os.system("clear")
-    print logo
-    print " "
     printc("Downloading Software")
     try: rURL = rDownloadURL[rInstall[rType]]
     except:
@@ -106,9 +102,6 @@ def install(rType="MAIN"):
 
 def mysql(rUsername, rPassword):
     global rMySQLCnf
-    os.system("clear")
-    print logo
-    print " "
     printc("Configuring MySQL")
     rCreate = True
     if os.path.exists("/etc/mysql/my.cnf"):
@@ -119,9 +112,6 @@ def mysql(rUsername, rPassword):
         rFile.write(rMySQLCnf)
         rFile.close()
         os.system("service mysql restart > /dev/null")
-    os.system("clear")
-    print logo
-    print " "
     printc("Enter New MySQL Root Password:", col.WARNING)
     for i in range(5):
         rMySQLRoot = raw_input("  ")
@@ -149,9 +139,6 @@ def mysql(rUsername, rPassword):
     return False
 
 def encrypt(rHost="127.0.0.1", rUsername="user_iptvpro", rPassword="", rDatabase="xtream_iptvpro", rServerID=1, rPort=7999):
-    os.system("clear")
-    print logo
-    print " "
     printc("Encrypting system...")
     try: os.remove("/home/xtreamcodes/iptv_xtream_codes/config")
     except: pass
@@ -160,26 +147,17 @@ def encrypt(rHost="127.0.0.1", rUsername="user_iptvpro", rPassword="", rDatabase
     rf.close()
 
 def phpmyadmin():
-    os.system("clear")
-    print logo
-    print " "
     printc("Installing phpmyadmin")
     #os.system("apt-get install phpmyadmin -y > /dev/null")
     #os.system("sudo ln -s /usr/share/phpmyadmin /home/xtreamcodes/iptv_xtream_codes/admin")
 
 def qsv():
-    os.system("clear")
-    print logo
-    print " "
     printc("Detecting GPU Hardware")
     printc("Skipping for now...")
     #os.system("apt-get install linux-base flussonic-qsv -y > /dev/null")
     #os.system("sudo ln -s /usr/share/phpmyadmin /home/xtreamcodes/iptv_xtream_codes/admin > /dev/null")
 
 def configure():
-    os.system("clear")
-    print logo
-    print " "
     printc("Configuring System")
     if not "/home/xtreamcodes/iptv_xtream_codes/" in open("/etc/fstab").read():
         rFile = open("/etc/fstab", "a")
@@ -206,32 +184,22 @@ def configure():
     if not "api.xtream-codes.com" in open("/etc/hosts").read(): os.system('echo "127.0.0.1    api.xtream-codes.com" >> /etc/hosts')
     if not "downloads.xtream-codes.com" in open("/etc/hosts").read(): os.system('echo "127.0.0.1    downloads.xtream-codes.com" >> /etc/hosts')
     if not " xtream-codes.com" in open("/etc/hosts").read(): os.system('echo "127.0.0.1    xtream-codes.com" >> /etc/hosts')
-    os.system("clear")
-    print logo
-    print " "
+
     printc("Checking last updates...")
     os.system('apt-get install unzip e2fsprogs python-paramiko -y && chown -R xtreamcodes:xtreamcodes /home/xtreamcodes/ && chmod +x /home/xtreamcodes/iptv_xtream_codes/permissions.sh && /home/xtreamcodes/iptv_xtream_codes/permissions.sh && find /home/xtreamcodes/ -type d -not \( -name .update -prune \) -exec chmod -R 777 {} +')
     os.system("sed -i 's|echo \"XtreamPlus\";|header(\"Location: https://www.google.com/\");|g' /home/xtreamcodes/iptv_xtream_codes/wwwdir/index.php")
-    os.system("clear")
-    print logo
-    print " "
+
     printc("Installing YouTube-dl")
     os.system("sudo wget -q https://yt-dl.org/downloads/latest/youtube-dl -O /usr/local/bin/youtube-dl")
     os.system("sudo chmod a+rx /usr/local/bin/youtube-dl")
-    os.system("clear")
-    print logo
-    print " "
+
     printc("Installing Glances")
     os.system("wget -q -O- https://bit.ly/glances | /bin/bash >/dev/null")
-    print logo
-    print " "
+    
     printc("Installing CertBot")
     os.system("sudo apt-get install certbot python3-certbot-nginx >/dev/null")
 
 def start(first=True):
-    os.system("clear")
-    print logo
-    print " "
     if first: printc("Starting XtreamPlus Services")
     else: printc("Restarting XtreamPlus")
     os.system("/home/xtreamcodes/iptv_xtream_codes/start_services.sh 2>/dev/null")
@@ -282,6 +250,11 @@ if __name__ == "__main__":
                     client = raw_input("  ")
                     printc("Enter Streaming port")
                     streaming = raw_input("  ")
+                    for i in tqdm(range(0, 100), disable = True, 
+                                desc ="Progress"): 
+                        sleep(.1) 
+
+                    print("Iteration Successful") 
                     rRet = prepare(rType.upper())
                     if not install(rType.upper()): sys.exit(1)
                     if rType.upper() == "MAIN":
