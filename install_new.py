@@ -248,12 +248,12 @@ if __name__ == "__main__":
                     client = raw_input("  ")
                     printc("Enter Streaming port")
                     streaming = raw_input("  ")
-                    rRet = prepare(rType.upper())
-                    if not install(rType.upper()): sys.exit(1)
-                    if rType.upper() == "MAIN":
-                        if not mysql(rUsername, rPassword): sys.exit(1)
-                    encrypt(rHost, rUsername, rPassword, rDatabase, rServerID, rPort)
-                    configure()
+                    #rRet = prepare(rType.upper())
+                    #if not install(rType.upper()): sys.exit(1)
+                    #if rType.upper() == "MAIN":
+                        #if not mysql(rUsername, rPassword): sys.exit(1)
+                    #encrypt(rHost, rUsername, rPassword, rDatabase, rServerID, rPort)
+                    #configure()
                     os.system("clear")
                     print logo
                     print " "
@@ -263,7 +263,6 @@ if __name__ == "__main__":
                     printc("Install GPU Transcoding? Y/N")
                     if raw_input("  ").upper() == "Y":
                         qsv()
-                    if rType.upper() == "MAIN": modifyNginx()
                     replacePorts(admin,client,streaming)
                     start()
                     os.system("clear")
