@@ -78,7 +78,7 @@ def prepare(rType="MAIN"):
         notcomplete = True
         i = 0
         while notcomplete:
-            print(animation[i % len(animation)], end='\r')
+            print animation[i % len(animation)] + "\r",
             os.system("apt-get install %s -y > /dev/null" % rPackage)
             notcomplete = False
             time.sleep(.1)
