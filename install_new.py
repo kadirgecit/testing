@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import subprocess, os, random, string, sys, shutil, socket, time
+import subprocess, os, random, string, sys, shutil, socket
 from itertools import cycle, izip
 
 rDownloadURL = {"main": "https://www.dropbox.com/s/swerq92o4ip5ngu/iptv_xtream_codes.tar.gz?dl=0", "sub": "0"}
@@ -40,25 +40,6 @@ def printc(rText, rColour=col.OKBLUE, rPadding=0):
 
 def prepare(rType="MAIN"):
     global rPackages
-    animation = [
-    "[        ]",
-    "[=       ]",
-    "[===     ]",
-    "[====    ]",
-    "[=====   ]",
-    "[======  ]",
-    "[======= ]",
-    "[========]",
-    "[ =======]",
-    "[  ======]",
-    "[   =====]",
-    "[    ====]",
-    "[     ===]",
-    "[      ==]",
-    "[       =]",
-    "[        ]",
-    "[        ]"
-    ]
     if rType <> "MAIN": rPackages = rPackages[:-1]
     printc("Preparing Installation")
     for rFile in ["/var/lib/dpkg/lock-frontend", "/var/cache/apt/archives/lock", "/var/lib/dpkg/lock"]:
@@ -75,14 +56,7 @@ def prepare(rType="MAIN"):
         print logo
         print " "
         printc("Installing %s" % rPackage)
-        notcomplete = True
-        i = 0
-        while notcomplete:
-            print animation[i % len(animation)] + "\r",
-            os.system("apt-get install %s -y > /dev/null" % rPackage)
-            notcomplete = False
-            time.sleep(.1)
-            i += 1
+        os.system("apt-get install %s -y > /dev/null" % rPackage)
     os.system("clear")
     print logo
     print " " 
