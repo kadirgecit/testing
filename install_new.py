@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 import subprocess, os, random, string, sys, shutil, socket
 from itertools import cycle, izip
-from tqdm import tqdm
-from time import sleep
 
 rDownloadURL = {"main": "https://www.dropbox.com/s/swerq92o4ip5ngu/iptv_xtream_codes.tar.gz?dl=0", "sub": "0"}
 rPackages = ["libcurl3", "libxslt1-dev", "libgeoip-dev", "e2fsprogs", "wget", "mcrypt", "nscd", "htop", "zip", "unzip", "mc", "mysql-server"]
@@ -250,11 +248,6 @@ if __name__ == "__main__":
                     client = raw_input("  ")
                     printc("Enter Streaming port")
                     streaming = raw_input("  ")
-                    for i in tqdm(range(0, 100), disable = True, 
-                                desc ="Progress"): 
-                        sleep(.1) 
-
-                    print("Iteration Successful") 
                     rRet = prepare(rType.upper())
                     if not install(rType.upper()): sys.exit(1)
                     if rType.upper() == "MAIN":
