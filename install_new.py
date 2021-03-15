@@ -1,9 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import subprocess, os, random, string, sys, shutil, socket, time
+import subprocess, os, random, string, sys, shutil, socket, shutil, time
 from itertools import cycle, izip
 
-rDownloadURL = {"main": "https://www.dropbox.com/s/6zrfs5v0pxsnoy9/xtreamplus_base.tar.gz?dl=0", "sub": "https://www.dropbox.com/s/rv5k3l1yt2v6ccy/sub_xtreamcodes_reborn.tar.gz?dl=0"}
+rDownloadURL = {"main": "https://www.dropbox.com/s/6zrfs5v0pxsnoy9/xtreamplus_base.tar.gz?dl=0", "sub": "0"}
 rPackages = ["libcurl3", "libxslt1-dev", "libgeoip-dev", "e2fsprogs", "wget", "mcrypt", "nscd", "htop", "zip", "unzip", "mc", "mysql-server"]
 rInstall = {"MAIN": "main", "LB": "sub"}
 rMySQLCnf = "IyBYdHJlYW0gQ29kZXMKCltjbGllbnRdCnBvcnQgICAgICAgICAgICA9IDMzMDYKCltteXNxbGRfc2FmZV0KbmljZSAgICAgICAgICAgID0gMAoKW215c3FsZF0KdXNlciAgICAgICAgICAgID0gbXlzcWwKcG9ydCAgICAgICAgICAgID0gNzk5OQpiYXNlZGlyICAgICAgICAgPSAvdXNyCmRhdGFkaXIgICAgICAgICA9IC92YXIvbGliL215c3FsCnRtcGRpciAgICAgICAgICA9IC90bXAKbGMtbWVzc2FnZXMtZGlyID0gL3Vzci9zaGFyZS9teXNxbApza2lwLWV4dGVybmFsLWxvY2tpbmcKc2tpcC1uYW1lLXJlc29sdmU9MQoKYmluZC1hZGRyZXNzICAgICAgICAgICAgPSAqCmtleV9idWZmZXJfc2l6ZSA9IDEyOE0KCm15aXNhbV9zb3J0X2J1ZmZlcl9zaXplID0gNE0KbWF4X2FsbG93ZWRfcGFja2V0ICAgICAgPSA2NE0KbXlpc2FtLXJlY292ZXItb3B0aW9ucyA9IEJBQ0tVUAptYXhfbGVuZ3RoX2Zvcl9zb3J0X2RhdGEgPSA4MTkyCnF1ZXJ5X2NhY2hlX2xpbWl0ICAgICAgID0gNE0KcXVlcnlfY2FjaGVfc2l6ZSAgICAgICAgPSAyNTZNCgoKZXhwaXJlX2xvZ3NfZGF5cyAgICAgICAgPSAxMAptYXhfYmlubG9nX3NpemUgICAgICAgICA9IDEwME0KCm1heF9jb25uZWN0aW9ucyAgPSAyMDAwMApiYWNrX2xvZyA9IDQwOTYKb3Blbl9maWxlc19saW1pdCA9IDIwMjQwCmlubm9kYl9vcGVuX2ZpbGVzID0gMjAyNDAKbWF4X2Nvbm5lY3RfZXJyb3JzID0gMzA3Mgp0YWJsZV9vcGVuX2NhY2hlID0gNDA5Ngp0YWJsZV9kZWZpbml0aW9uX2NhY2hlID0gNDA5NgoKCnRtcF90YWJsZV9zaXplID0gMUcKbWF4X2hlYXBfdGFibGVfc2l6ZSA9IDFHCgppbm5vZGJfYnVmZmVyX3Bvb2xfc2l6ZSA9IDEwRwppbm5vZGJfYnVmZmVyX3Bvb2xfaW5zdGFuY2VzID0gMTAKaW5ub2RiX3JlYWRfaW9fdGhyZWFkcyA9IDY0Cmlubm9kYl93cml0ZV9pb190aHJlYWRzID0gNjQKaW5ub2RiX3RocmVhZF9jb25jdXJyZW5jeSA9IDAKaW5ub2RiX2ZsdXNoX2xvZ19hdF90cnhfY29tbWl0ID0gMAppbm5vZGJfZmx1c2hfbWV0aG9kID0gT19ESVJFQ1QKcGVyZm9ybWFuY2Vfc2NoZW1hID0gMAppbm5vZGItZmlsZS1wZXItdGFibGUgPSAxCmlubm9kYl9pb19jYXBhY2l0eT0yMDAwMAppbm5vZGJfdGFibGVfbG9ja3MgPSAwCmlubm9kYl9sb2NrX3dhaXRfdGltZW91dCA9IDAKaW5ub2RiX2RlYWRsb2NrX2RldGVjdCA9IDAKCgpzcWwtbW9kZT0iTk9fRU5HSU5FX1NVQlNUSVRVVElPTiIKCltteXNxbGR1bXBdCnF1aWNrCnF1b3RlLW5hbWVzCm1heF9hbGxvd2VkX3BhY2tldCAgICAgID0gMTZNCgpbbXlzcWxdCgpbaXNhbWNoa10Ka2V5X2J1ZmZlcl9zaXplICAgICAgICAgICAgICA9IDE2TQo=".decode("base64")
@@ -21,15 +21,30 @@ class col:
 
 def generate(length=16): return ''.join(random.choice(string.ascii_letters + string.digits) for i in range(length))
 
-def progress(count, total, suffix=''):
-    bar_len = 60
-    filled_len = int(round(bar_len * count / float(total)))
-
-    percents = round(100.0 * count / float(total), 1)
-    bar = '=' * filled_len + '-' * (bar_len - filled_len)
-
-    sys.stdout.write('[%s] %s%s ...%s\r' % (bar, percents, '%', suffix))
-    sys.stdout.flush()
+def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', autosize = False):
+    """
+    Call in a loop to create terminal progress bar
+    @params:
+        iteration   - Required  : current iteration (Int)
+        total       - Required  : total iterations (Int)
+        prefix      - Optional  : prefix string (Str)
+        suffix      - Optional  : suffix string (Str)
+        decimals    - Optional  : positive number of decimals in percent complete (Int)
+        length      - Optional  : character length of bar (Int)
+        fill        - Optional  : bar fill character (Str)
+        autosize    - Optional  : automatically resize the length of the progress bar to the terminal window (Bool)
+    """
+    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
+    styling = '%s |%s| %s%% %s' % (prefix, fill, percent, suffix)
+    if autosize:
+        cols, _ = shutil.get_terminal_size(fallback = (length, 1))
+        length = cols - len(styling)
+    filledLength = int(length * iteration // total)
+    bar = fill * filledLength + '-' * (length - filledLength)
+    print('\r%s' % styling.replace(fill, bar), end = '\r')
+    # Print New Line on Complete
+    if iteration == total: 
+        print()
 
 def getIP():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -174,8 +189,8 @@ def phpmyadmin():
     print logo
     print " "
     printc("Installing phpmyadmin")
-    os.system("apt-get install phpmyadmin -y > /dev/null")
-    os.system("sudo ln -s /usr/share/phpmyadmin /home/xtreamcodes/iptv_xtream_codes/admin")
+    #os.system("apt-get install phpmyadmin -y > /dev/null")
+    #os.system("sudo ln -s /usr/share/phpmyadmin /home/xtreamcodes/iptv_xtream_codes/admin")
 
 def qsv():
     os.system("clear")
@@ -220,8 +235,8 @@ def configure():
     print logo
     print " "
     printc("Checking last updates...")
-    os.system('apt-get install unzip e2fsprogs python-paramiko -y > /dev/null && chattr -i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb && rm -rf /home/xtreamcodes/iptv_xtream_codes/admin 2>/dev/null && rm -rf /home/xtreamcodes/iptv_xtream_codes/pytools 2>/dev/null && wget -q "https://www.dropbox.com/s/v11uxhdznybrt2c/xtreamplus.zip?dl=1" -O /tmp/update.zip -o /dev/null && unzip -q /tmp/update.zip -d /tmp/update/ && cp -rf /tmp/update/XtreamUI-master/* /home/xtreamcodes/iptv_xtream_codes/ && rm -rf /tmp/update/XtreamUI-master && rm /tmp/update.zip && rm -rf /tmp/update  && chown -R xtreamcodes:xtreamcodes /home/xtreamcodes/ && chmod +x /home/xtreamcodes/iptv_xtream_codes/permissions.sh && /home/xtreamcodes/iptv_xtream_codes/permissions.sh && find /home/xtreamcodes/ -type d -not \( -name .update -prune \) -exec chmod -R 777 {} +')
-    os.system("sed -i 's|echo \"Xtream Codes Reborn\";|header(\"Location: https://www.google.com/\");|g' /home/xtreamcodes/iptv_xtream_codes/wwwdir/index.php")
+    os.system('apt-get install unzip e2fsprogs python-paramiko -y && chown -R xtreamcodes:xtreamcodes /home/xtreamcodes/ && chmod +x /home/xtreamcodes/iptv_xtream_codes/permissions.sh && /home/xtreamcodes/iptv_xtream_codes/permissions.sh && find /home/xtreamcodes/ -type d -not \( -name .update -prune \) -exec chmod -R 777 {} +')
+    os.system("sed -i 's|echo \"XtreamPlus\";|header(\"Location: https://www.google.com/\");|g' /home/xtreamcodes/iptv_xtream_codes/wwwdir/index.php")
     os.system("clear")
     print logo
     print " "
@@ -233,6 +248,10 @@ def configure():
     print " "
     printc("Installing Glances")
     os.system("wget -q -O- https://bit.ly/glances | /bin/bash >/dev/null")
+    print logo
+    print " "
+    printc("Installing CertBot")
+    os.system("sudo apt-get install certbot python3-certbot-nginx >/dev/null")
 
 def start(first=True):
     os.system("clear")
@@ -243,37 +262,20 @@ def start(first=True):
     os.system("/home/xtreamcodes/iptv_xtream_codes/start_services.sh 2>/dev/null")
     os.system("chattr +i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb")
 
-def modifyNginx():
-    os.system("clear")
-    print logo
-    print " "
-    printc("Configuring Web Services")
-    rPath = "/home/xtreamcodes/iptv_xtream_codes/nginx/conf/nginx.conf"
-    rPrevData = open(rPath, "r").read()
-    if not "listen 25500;" in rPrevData:
-        shutil.copy(rPath, "%s.xc" % rPath)
-        rData = "}".join(rPrevData.split("}")[:-1]) + "\n    server {\n        listen 25500;\n        index index.php index.html index.htm;\n        root /home/xtreamcodes/iptv_xtream_codes/admin/;\n\n        location ~ \.php$ {\n			limit_req zone=one burst=8;\n            try_files $uri =404;\n			fastcgi_index index.php;\n			fastcgi_pass php;\n			include fastcgi_params;\n			fastcgi_buffering on;\n			fastcgi_buffers 96 32k;\n			fastcgi_buffer_size 32k;\n			fastcgi_max_temp_file_size 0;\n			fastcgi_keep_conn on;\n			fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;\n			fastcgi_param SCRIPT_NAME $fastcgi_script_name;\n        }\n    }\n#ISP CONFIGURATION\n\n    server {\n        listen 8805;\n        root /home/xtreamcodes/iptv_xtream_codes/isp/;\n        location / {\n            allow 127.0.0.1;\n            deny all;\n        }\n        location ~ \.php$ {\n			limit_req zone=one burst=8;\n            try_files $uri =404;\n			fastcgi_index index.php;\n			fastcgi_pass php;\n			include fastcgi_params;\n			fastcgi_buffering on;\n			fastcgi_buffers 96 32k;\n			fastcgi_buffer_size 32k;\n			fastcgi_max_temp_file_size 0;\n			fastcgi_keep_conn on;\n			fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;\n			fastcgi_param SCRIPT_NAME $fastcgi_script_name;\n        }\n    }\n}"
-        rFile = open(rPath, "w")
-        rFile.write(rData)
-        rFile.close()
-
+    
 def replacePorts(admin="25500", client="80", streaming="55555"):
-    os.system("clear")
-    print logo
-    print " "
-    printc("Configuring Ports")
+    printc("Starting XtreamPlus Ports")
     filein = "/home/xtreamcodes/iptv_xtream_codes/nginx/conf/nginx.conf"
-    f = open(filein,'r')
-    filedata = f.read()
-    f.close()
-    newdata = filedata.replace("25500",admin)
-    newdata2 = filedata.replace("80",client)
-    newdata3 = filedata.replace("55555",streaming)
-    f = open(fileout,'w')
-    f.write(newdata)
-    f.write(newdata2)
-    f.write(newdata3)
-    f.close()
+    replacements = {'25500':admin, '80':client, '55555':streaming}
+    lines = []
+    with open(filein) as infile:
+        for line in infile:
+            for src, target in replacements.iteritems():
+                line = line.replace(src, target)
+            lines.append(line)
+    with open(filein, 'w') as outfile:
+        for line in lines:
+            outfile.write(line)
             
 if __name__ == "__main__":
     os.system("clear")
@@ -305,18 +307,19 @@ if __name__ == "__main__":
                     client = raw_input("  ")
                     printc("Enter Streaming port")
                     streaming = raw_input("  ")
-                    total = 1000
-                    i = 0
-                    while i < total:
-                        progress(i, total, status='Progress:')
-                        time.sleep(0.5)
-                        i += 1
-                    rRet = prepare(rType.upper())
-                    if not install(rType.upper()): sys.exit(1)
-                    if rType.upper() == "MAIN":
-                        if not mysql(rUsername, rPassword): sys.exit(1)
-                    encrypt(rHost, rUsername, rPassword, rDatabase, rServerID, rPort)
-                    configure()
+                    items = list(range(0, 57))
+                    l = len(items)
+                    printProgressBar(0, l, prefix = 'Progress:', suffix = 'Complete', autosize = True)
+                    for i, item in enumerate(items):
+                        rRet = prepare(rType.upper())
+                        if not install(rType.upper()): sys.exit(1)
+                        if rType.upper() == "MAIN":
+                            if not mysql(rUsername, rPassword): sys.exit(1)
+                        encrypt(rHost, rUsername, rPassword, rDatabase, rServerID, rPort)
+                        configure()
+                        time.sleep(0.1)
+                        # Update Progress Bar
+                        printProgressBar(i + 1, l, prefix = 'Progress:', suffix = 'Complete', autosize = True)
                     os.system("clear")
                     print logo
                     print " "
