@@ -1,5 +1,4 @@
 echo "XtreamPlus Command Line Installer v1.0"
-echo "Please do not interrupt!"
 echo -ne '[>>>                       ] [20%] Job: Preparing\r'
 sudo apt-get update > /dev/null
 sleep 2
