@@ -4,9 +4,15 @@ echo ""
 echo "Welcome to XtreamPlus installer"
 echo "Please wait installer is preparing"
 sudo apt-get update > /dev/null
-apt-get install libxslt1-dev libcurl3 libgeoip-dev python git -y > /dev/null
+echo "Installing missing components..."
+apt-get install libxslt1-dev -y > /dev/null
+echo "Downloading latest installer..."
+apt-get install libcurl3 libgeoip-dev -y >/dev/null
+echo "Starting..."
+apt-get install python git -y >/dev/null
 wget -q https://raw.githubusercontent.com/kadirgecit/testing/main/install_new.py 
 sudo python install_new.py
+echo "Cleaning..."
 sudo rm install_new.py
 
 
