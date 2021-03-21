@@ -181,7 +181,7 @@ def configure():
 def start(first=True):
     if first: printc("Starting XtreamPlus Service")
     else: printc("Restarting XtreamPlus Service")
-    os.system("/home/xtreamcodes/iptv_xtream_codes/start_services.sh > /dev/null")
+    #os.system("/home/xtreamcodes/iptv_xtream_codes/start_services.sh > /dev/null")
     os.system("chattr +i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb")
 
 def modifyNginx():
