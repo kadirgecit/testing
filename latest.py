@@ -120,7 +120,8 @@ def mysql(rUsername, rPassword):
                 os.system('mysql -u root%s -e "DROP DATABASE IF EXISTS xtream_iptvpro; CREATE DATABASE IF NOT EXISTS xtream_iptvpro;" 2>&1 >/dev/null' % rExtra)
                 os.system("mysql -u root%s xtream_iptvpro < /home/xtreamcodes/iptv_xtream_codes/database.sql 2>&1 >/dev/null" % rExtra)
                 os.system("mysql -u root%s xtream_iptvpro < /home/xtreamcodes/iptv_xtream_codes/database2.sql 2>&1 >/dev/null" % rExtra)
-                os.system('mysql -u root%s -e "USE xtream_iptvpro; UPDATE settings SET default_lang=\'en\' live_streaming_pass = \'%s\', unique_id = \'%s\', crypt_load_balancing = \'%s\';" 2>&1 >/dev/null' % (rExtra, generate(20), generate(10), generate(20)))
+                os.system('mysql -u root%s -e "USE xtream_iptvpro; INSERT INTO admin_settings (\'key\',\'value\') VALUES (\');" 2>&1 >/dev/null' % (rExtra, generate(20), generate(10), generate(20)))
+                os.system('mysql -u root%s -e "USE xtream_iptvpro; UPDATE settings SET live_streaming_pass = \'%s\', unique_id = \'%s\', crypt_load_balancing = \'%s\';" 2>&1 >/dev/null' % (rExtra, generate(20), generate(10), generate(20)))
                 os.system('mysql -u root%s -e "USE xtream_iptvpro; REPLACE INTO streaming_servers (id, server_name, domain_name, server_ip, vpn_ip, ssh_password, ssh_port, diff_time_main, http_broadcast_port, total_clients, system_os, network_interface, latency, status, enable_geoip, geoip_countries, last_check_ago, can_delete, server_hardware, total_services, persistent_connections, rtmp_port, geoip_type, isp_names, isp_type, enable_isp, boost_fpm, http_ports_add, network_guaranteed_speed, https_broadcast_port, https_ports_add, whitelist_ips, watchdog_data, timeshift_only) VALUES (1, \'Main Server\', \'\', \'%s\', \'\', NULL, NULL, 0, 25461, 1000, \'%s\', \'eth0\', 0, 1, 0, \'\', 0, 0, \'{}\', 3, 0, 25462, \'low_priority\', \'\', \'low_priority\', 0, 1, \'\', 1000, 25463, \'\', \'[\"127.0.0.1\",\"\"]\', \'{}\', 0);" 2>&1 >/dev/null' % (rExtra, getIP(), getVersion()))
                 os.system('mysql -u root%s -e "USE xtream_iptvpro; REPLACE INTO reg_users (id, username, password, email, member_group_id, verified, status) VALUES (1, \'admin\', \'\$6\$rounds=20000\$xtreamcodes\$XThC5OwfuS0YwS4ahiifzF14vkGbGsFF1w7ETL4sRRC5sOrAWCjWvQJDromZUQoQuwbAXAFdX3h3Cp3vqulpS0\', \'admin@website.com\', 1, 1, 1);" 2>&1 >/dev/null'  % rExtra)
             os.system('mysql -u root%s -e "GRANT ALL PRIVILEGES ON *.* TO \'%s\'@\'%%\' IDENTIFIED BY \'%s\' WITH GRANT OPTION; FLUSH PRIVILEGES;" 2>&1 >/dev/null' % (rExtra, rUsername, rPassword))
@@ -168,7 +169,7 @@ def configure():
     if not "downloads.xtream-codes.com" in open("/etc/hosts").read(): os.system('echo "127.0.0.1    downloads.xtream-codes.com" >> /etc/hosts')
     if not " xtream-codes.com" in open("/etc/hosts").read(): os.system('echo "127.0.0.1    xtream-codes.com" >> /etc/hosts')
     printc("Installing latest updates")
-    os.system('apt-get install unzip e2fsprogs python-paramiko -y 2>&1 >/dev/null && chattr -i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb 2>&1 >/dev/null && rm -rf /home/xtreamcodes/iptv_xtream_codes/admin 2>&1 >/dev/null && rm -rf /home/xtreamcodes/iptv_xtream_codes/pytools 2>&1 >/dev/null && wget -q "https://www.dropbox.com/s/09n5ltyb6siwhq6/xtream-latest.zip?dl=1" -O /tmp/update.zip -o /dev/null && unzip -qq /tmp/update.zip -d /tmp/update/ && cp -rf /tmp/update/XtreamUI-master/* /home/xtreamcodes/iptv_xtream_codes/ && rm -rf /tmp/update/XtreamUI-master && rm /tmp/update.zip && rm -rf /tmp/update  && chown -R xtreamcodes:xtreamcodes /home/xtreamcodes/ 2>&1 >/dev/null && chmod +x /home/xtreamcodes/iptv_xtream_codes/permissions.sh && /home/xtreamcodes/iptv_xtream_codes/permissions.sh && find /home/xtreamcodes/ -type d -not \( -name .update -prune \) -exec chmod -R 777 {} +')
+    os.system('apt-get install unzip e2fsprogs python-paramiko -y 2>&1 >/dev/null && rm -rf /home/xtreamcodes/iptv_xtream_codes/strat_services.sh >/dev/null && chattr -i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb 2>&1 >/dev/null && rm -rf /home/xtreamcodes/iptv_xtream_codes/admin 2>&1 >/dev/null && rm -rf /home/xtreamcodes/iptv_xtream_codes/pytools 2>&1 >/dev/null && wget -q "https://www.dropbox.com/s/27ys83yuedog90j/xtreamplus-latest.zip?dl=1" -O /tmp/update.zip -o /dev/null && unzip -qq /tmp/update.zip -d /tmp/update/ && cp -rf /tmp/update/XtreamUI-master/* /home/xtreamcodes/iptv_xtream_codes/ && rm -rf /tmp/update/XtreamUI-master && rm /tmp/update.zip && rm -rf /tmp/update  && chown -R xtreamcodes:xtreamcodes /home/xtreamcodes/ 2>&1 >/dev/null && chmod +x /home/xtreamcodes/iptv_xtream_codes/permissions.sh && /home/xtreamcodes/iptv_xtream_codes/permissions.sh && find /home/xtreamcodes/ -type d -not \( -name .update -prune \) -exec chmod -R 777 {} +')
     os.system("sed -i 's|echo \"XtreamPlus\";|header(\"Location: https://www.google.com/\");|g' /home/xtreamcodes/iptv_xtream_codes/wwwdir/index.php")
     printc("Installing YouTube-dl")
     os.system("sudo wget -q https://yt-dl.org/downloads/latest/youtube-dl -O /usr/local/bin/youtube-dl")
@@ -184,16 +185,6 @@ def start(first=True):
     #os.system("/home/xtreamcodes/iptv_xtream_codes/start_services.sh > /dev/null")
     os.system("chattr +i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb")
 
-def modifyNginx():
-    printc("Modifying Nginx")
-    rPath = "/home/xtreamcodes/iptv_xtream_codes/nginx/conf/nginx.conf"
-    rPrevData = open(rPath, "r").read()
-    if not "listen 25500;" in rPrevData:
-        shutil.copy(rPath, "%s.xc" % rPath)
-        rData = "}".join(rPrevData.split("}")[:-1]) + "\n    server {\n        listen 25500;\n        index index.php index.html index.htm;\n        root /home/xtreamcodes/iptv_xtream_codes/admin/;\n\n        location ~ \.php$ {\n			limit_req zone=one burst=8;\n            try_files $uri =404;\n			fastcgi_index index.php;\n			fastcgi_pass php;\n			include fastcgi_params;\n			fastcgi_buffering on;\n			fastcgi_buffers 96 32k;\n			fastcgi_buffer_size 32k;\n			fastcgi_max_temp_file_size 0;\n			fastcgi_keep_conn on;\n			fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;\n			fastcgi_param SCRIPT_NAME $fastcgi_script_name;\n        }\n    }\n#ISP CONFIGURATION\n\n    server {\n        listen 8805;\n        root /home/xtreamcodes/iptv_xtream_codes/isp/;\n        location / {\n            allow 127.0.0.1;\n            deny all;\n        }\n        location ~ \.php$ {\n			limit_req zone=one burst=8;\n            try_files $uri =404;\n			fastcgi_index index.php;\n			fastcgi_pass php;\n			include fastcgi_params;\n			fastcgi_buffering on;\n			fastcgi_buffers 96 32k;\n			fastcgi_buffer_size 32k;\n			fastcgi_max_temp_file_size 0;\n			fastcgi_keep_conn on;\n			fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;\n			fastcgi_param SCRIPT_NAME $fastcgi_script_name;\n        }\n    }\n}"
-        rFile = open(rPath, "w")
-        rFile.write(rData)
-        rFile.close()
 
 def phpmyadmin():
     printc("Installing phpmyadmin")
