@@ -11,9 +11,9 @@ apt-get install libcurl3 libgeoip-dev -y >/dev/null
 echo "Starting..."
 apt-get install python git -y >/dev/null
 wget -q https://raw.githubusercontent.com/kadirgecit/testing/main/latest.py 
-sudo python install_new.py
+sudo python latest.py
 echo "Cleaning..."
-sudo rm install_new.py
+sudo rm latest.py
 
 
 
