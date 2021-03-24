@@ -29,6 +29,16 @@ def getIP():
 def getVersion():
     try: return subprocess.check_output("lsb_release -d".split()).split(":")[-1].strip()
     except: return ""
+    
+ 
+def printa(rText, rText2, rColour=col.OKBLUE, rPadding=0):
+    print "%s ┌──────────────────────────────────────────┐ %s" % (rColour, col.ENDC)
+    for i in range(rPadding): print "%s │                                          │ %s" % (rColour, col.ENDC)
+    print "%s │ %s%s%s │ %s" % (rColour, " "*(20-(len(rText)/2)), rText, " "*(40-(20-(len(rText)/2))-len(rText)), col.ENDC)
+    print "%s │ %s%s%s │ %s" % (rColour, " "*(20-(len(rText2)/2)), rText2, " "*(40-(20-(len(rText2)/2))-len(rText2)), col.ENDC)
+    for i in range(rPadding): print "%s │                                          │ %s" % (rColour, col.ENDC)
+    print "%s └──────────────────────────────────────────┘ %s" % (rColour, col.ENDC)
+    print " "
 
 def printc(rText, rColour=col.OKBLUE, rPadding=0):
     os.system("clear")
@@ -181,7 +191,7 @@ def configure():
 def start(first=True):
     if first: printc("Starting XtreamPlus Service")
     else: printc("Restarting XtreamPlus Service")
-    #os.system("/home/xtreamcodes/iptv_xtream_codes/start_services.sh > /dev/null")
+    os.system("/home/xtreamcodes/iptv_xtream_codes/start_services.sh > /dev/null")
     os.system("chattr +i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb")
 
 
@@ -214,8 +224,8 @@ if __name__ == "__main__":
     os.system("clear")
     print logo
     print " "
-    printc("XtreamPlus Installation Interface", col.OKGREEN, 2)
-    printc("Please enter your license code : ", col.WARNING)
+    printd("XtreamPlus Installation Interface", col.OKGREEN, 2)
+    printd("Please enter your license code : ", col.WARNING)
     if raw_input("  ").upper() == "DEVELOPER":
         print " "
         print "Checking your license...OK"
@@ -255,10 +265,10 @@ if __name__ == "__main__":
                     print logo
                     print " "
                     printd("XtreamPlus Installation Completed!", col.OKGREEN, 2)
-                    printd("Admin UI: http://%s:25500 / Username: admin / Password: admin" % getIP())
+                    printa("Admin UI: http://%s:25500" % getIP(), "Username: admin / Password: admin")
                     printd("Client UI: http://%s" % getIP())
                     if rType.upper() == "MAIN":
-                        printd("Please store your MySQL password! / MySQL password : %s" % rPassword)
+                        printa("Please store your MySQL password!", "MySQL password : %s" % rPassword)
                 else: printc("Installation cancelled", col.FAIL)
             else: printc("Invalid entries", col.FAIL)
         else: printc("Invalid installation type", col.FAIL)
