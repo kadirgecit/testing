@@ -255,7 +255,7 @@ if __name__ == "__main__":
                     print logo
                     print " "
                     printd("XtreamPlus Installation Completed!", col.OKGREEN, 2)
-                    printa("Admin UI: http://%s:25500" % getIP(), "Username: admin / Password: admin")
+                    printa("Admin UI: http://%s:%s" % (getIP(),admin), "Username: admin / Password: admin")
                     printd("Client UI: http://%s" % getIP())
                     if rType.upper() == "MAIN":
                         printa("Please store your MySQL password!", "MySQL password : %s" % rPassword)
