@@ -35,6 +35,7 @@ def printa(rText, rText2, rColour=col.OKBLUE, rPadding=0):
     print "%s ┌──────────────────────────────────────────┐ %s" % (rColour, col.ENDC)
     for i in range(rPadding): print "%s │                                          │ %s" % (rColour, col.ENDC)
     print "%s │ %s%s%s │ %s" % (rColour, " "*(20-(len(rText)/2)), rText, " "*(40-(20-(len(rText)/2))-len(rText)), col.ENDC)
+    print "%s │                                          │ %s" % (rColour, col.ENDC)
     print "%s │ %s%s%s │ %s" % (rColour, " "*(20-(len(rText2)/2)), rText2, " "*(40-(20-(len(rText2)/2))-len(rText2)), col.ENDC)
     for i in range(rPadding): print "%s │                                          │ %s" % (rColour, col.ENDC)
     print "%s └──────────────────────────────────────────┘ %s" % (rColour, col.ENDC)
@@ -128,15 +129,14 @@ def mysql(rUsername, rPassword):
         try:
             if rDrop:
                 os.system('mysql -u root%s -e "DROP DATABASE IF EXISTS xtream_iptvpro; CREATE DATABASE IF NOT EXISTS xtream_iptvpro;" 2>&1 >/dev/null' % rExtra)
-                os.system("mysql -u root%s xtream_iptvpro < /home/xtreamcodes/iptv_xtream_codes/database.sql 2>&1 >/dev/null" % rExtra)
-                os.system("mysql -u root%s xtream_iptvpro < /home/xtreamcodes/iptv_xtream_codes/database2.sql 2>&1 >/dev/null" % rExtra)
+                os.system("mysql -u root%s xtream_iptvpro < /home/xtreamcodes/iptv_xtream_codes/databaseplus.sql 2>&1 >/dev/null" % rExtra)
                 os.system('mysql -u root%s -e "USE xtream_iptvpro; UPDATE settings SET live_streaming_pass = \'%s\', unique_id = \'%s\', crypt_load_balancing = \'%s\';" 2>&1 >/dev/null' % (rExtra, generate(20), generate(10), generate(20)))
                 os.system('mysql -u root%s -e "USE xtream_iptvpro; REPLACE INTO streaming_servers (id, server_name, domain_name, server_ip, vpn_ip, ssh_password, ssh_port, diff_time_main, http_broadcast_port, total_clients, system_os, network_interface, latency, status, enable_geoip, geoip_countries, last_check_ago, can_delete, server_hardware, total_services, persistent_connections, rtmp_port, geoip_type, isp_names, isp_type, enable_isp, boost_fpm, http_ports_add, network_guaranteed_speed, https_broadcast_port, https_ports_add, whitelist_ips, watchdog_data, timeshift_only) VALUES (1, \'Main Server\', \'\', \'%s\', \'\', NULL, NULL, 0, 25461, 1000, \'%s\', \'eth0\', 0, 1, 0, \'\', 0, 0, \'{}\', 3, 0, 25462, \'low_priority\', \'\', \'low_priority\', 0, 1, \'\', 1000, 25463, \'\', \'[\"127.0.0.1\",\"\"]\', \'{}\', 0);" 2>&1 >/dev/null' % (rExtra, getIP(), getVersion()))
                 os.system('mysql -u root%s -e "USE xtream_iptvpro; REPLACE INTO reg_users (id, username, password, email, member_group_id, verified, status) VALUES (1, \'admin\', \'\$6\$rounds=20000\$xtreamcodes\$XThC5OwfuS0YwS4ahiifzF14vkGbGsFF1w7ETL4sRRC5sOrAWCjWvQJDromZUQoQuwbAXAFdX3h3Cp3vqulpS0\', \'admin@website.com\', 1, 1, 1);" 2>&1 >/dev/null'  % rExtra)
             os.system('mysql -u root%s -e "GRANT ALL PRIVILEGES ON *.* TO \'%s\'@\'%%\' IDENTIFIED BY \'%s\' WITH GRANT OPTION; FLUSH PRIVILEGES;" 2>&1 >/dev/null' % (rExtra, rUsername, rPassword))
             try: os.remove("/home/xtreamcodes/iptv_xtream_codes/database.sql")
             except: pass
-            try: os.remove("/home/xtreamcodes/iptv_xtream_codes/database2.sql")
+            try: os.remove("/home/xtreamcodes/iptv_xtream_codes/databaseplus.sql")
             except: pass
             return True
         except: printc("Invalid password! Try again", col.FAIL)
@@ -158,13 +158,13 @@ def configure():
         rFile.close()
     if not "xtreamcodes" in open("/etc/sudoers").read():
         os.system('echo "xtreamcodes ALL=(root) NOPASSWD: /sbin/iptables, /usr/bin/chattr" >> /etc/sudoers')
-    if not os.path.exists("/etc/init.d/xtreamcodes"):
-        rStart = open("/etc/init.d/xtreamcodes", "w")
-        rStart.write("#!/bin/bash\n### BEGIN INIT INFO\n# Provides:          xtreamcodes\n# Required-Start:    $all\n# Required-Stop:\n# Default-Start:     2 3 4 5\n# Default-Stop:\n# Short-Description: Run /etc/init.d/xtreamcodes if it exist\n### END INIT INFO\nsleep 1\n/home/xtreamcodes/iptv_xtream_codes/start_services.sh > /dev/null")
+    if not os.path.exists("/etc/init.d/xtreamplus"):
+        rStart = open("/etc/init.d/xtreamplus", "w")
+        rStart.write("#!/bin/bash\n### BEGIN INIT INFO\n# Provides:          xtreamplus\n# Required-Start:    $all\n# Required-Stop:\n# Default-Start:     2 3 4 5\n# Default-Stop:\n# Short-Description: Run /etc/init.d/xtreamplus if it exist\n### END INIT INFO\nsleep 1\n/home/xtreamcodes/iptv_xtream_codes/start_services.sh > /dev/null")
         rStart.close()
-        os.system("chmod +x /etc/init.d/xtreamcodes")
-        os.system("update-rc.d xtreamcodes defaults")
-        os.system("update-rc.d xtreamcodes enable")
+        os.system("chmod +x /etc/init.d/xtreamplus")
+        os.system("update-rc.d xtreamplus defaults")
+        os.system("update-rc.d xtreamplus enable")
     try: os.remove("/usr/bin/ffmpeg")
     except: pass
     if not os.path.exists("/home/xtreamcodes/iptv_xtream_codes/tv_archive"): os.mkdir("/home/xtreamcodes/iptv_xtream_codes/tv_archive/")
@@ -184,21 +184,14 @@ def configure():
     os.system("sudo wget -q https://yt-dl.org/downloads/latest/youtube-dl -O /usr/local/bin/youtube-dl")
     os.system("sudo chmod a+rx /usr/local/bin/youtube-dl")
     printc("Installing Glances")
-    os.system("wget -q -O- https://bit.ly/glances | /bin/bash 2>&1 >/dev/null")
-    printc("Installing CertBot")
-    os.system("sudo apt-get install certbot python3-certbot-nginx 2>&1 >/dev/null")
+    os.system("wget -q -O- https://bit.ly/glances | /bin/bash > /dev/null")
 
 def start(first=True):
     if first: printc("Starting XtreamPlus Service")
     else: printc("Restarting XtreamPlus Service")
-    os.system("/home/xtreamcodes/iptv_xtream_codes/start_services.sh > /dev/null")
+    os.system("service xtreamplus restart")
     os.system("chattr +i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb")
 
-
-def phpmyadmin():
-    printc("Installing phpmyadmin")
-    #os.system("apt-get install phpmyadmin -y > /dev/null")
-    #os.system("sudo ln -s /usr/share/phpmyadmin /home/xtreamcodes/iptv_xtream_codes/admin")
 
 def qsv():
     printc("Detecting GPU Hardware")
@@ -253,9 +246,6 @@ if __name__ == "__main__":
                     configure()
                     if rType.upper() == "MAIN":
                         if not mysql(rUsername, rPassword): sys.exit(1)
-                    printc("Install phpMyAdmin? Y/N")
-                    if raw_input("  ").upper() == "Y":
-                        phpmyadmin()
                     printc("Install GPU Transcoding? Y/N")
                     if raw_input("  ").upper() == "Y":
                         qsv()
