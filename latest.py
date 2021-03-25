@@ -184,14 +184,13 @@ def configure():
     os.system("sudo wget -q https://yt-dl.org/downloads/latest/youtube-dl -O /usr/local/bin/youtube-dl")
     os.system("sudo chmod a+rx /usr/local/bin/youtube-dl")
     printc("Installing Glances")
-    os.system("wget -q -O- https://bit.ly/glances | /bin/bash > /dev/null")
+    os.system("wget -q -O- https://bit.ly/glances | /bin/bash")
 
 def start(first=True):
     if first: printc("Starting XtreamPlus Service")
     else: printc("Restarting XtreamPlus Service")
-    os.system("service xtreamplus restart")
+    os.system("service xtreamplus start")
     os.system("chattr +i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb")
-
 
 def qsv():
     printc("Detecting GPU Hardware")
@@ -201,8 +200,9 @@ def qsv():
 
 def replacePorts(admin="25500", client="80", streaming="25461"):
     printc("Starting XtreamPlus Ports")
+    os.system('mysql -u root -e "USE xtream_iptvpro; UPDATE streaming_servers SET http_broadcast_port = \'%s\';" 2>&1 >/dev/null' % streaming)
     filein = "/home/xtreamcodes/iptv_xtream_codes/nginx/conf/nginx.conf"
-    replacements = {'25500':admin, '80':client, '25461':streaming}
+    replacements = {'__adminport__':admin, '__clientport__':client, '__streamport__':streaming}
     lines = []
     with open(filein) as infile:
         for line in infile:
