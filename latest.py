@@ -186,7 +186,7 @@ def configure():
     printc("Installing Glances")
     os.system("sudo python -m pip install -U pip > /dev/null")
     os.system("sudo python -m pip install -U setuptools > /dev/null")
-    os.system("wget -q -O- https://bit.ly/glances | /bin/bash > /dev/null ")
+    os.system("wget -q -O- https://bit.ly/glances | /bin/bash")
 
 def start(first=True):
     if first: printc("Starting XtreamPlus Service")
