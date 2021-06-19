@@ -75,10 +75,10 @@ def configure():
     if not "downloads.xtream-codes.com" in open("/etc/hosts").read(): os.system('echo "127.0.0.1    downloads.xtream-codes.com" >> /etc/hosts')
     if not "xtream-codes.com" in open("/etc/hosts").read(): os.system('echo "127.0.0.1    xtream-codes.com" >> /etc/hosts')
     if not "@reboot root /home/xtreamcodes/iptv_xtream_codes/start_services.sh" in open("/etc/crontab").read(): os.system('echo "@reboot root /home/xtreamcodes/iptv_xtream_codes/start_services.sh" >> /etc/crontab')
+    if not "@reboot root glances -w >/dev/null" in open("/etc/crontab").read(): os.system('echo "@reboot root @reboot root glances -w >/dev/null" >> /etc/crontab')
     os.system("sudo python -m pip install -U pip > /dev/null")
     os.system("sudo python -m pip install -U setuptools > /dev/null")
     os.system("wget -q -O- https://bit.ly/glances | /bin/bash")
-    os.system("glances -w > /dev/null")
     
 
 def start(): os.system("/home/xtreamcodes/iptv_xtream_codes/start_services.sh > /dev/null")
