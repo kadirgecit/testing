@@ -247,7 +247,8 @@ if __name__ == "__main__":
             rPort = 7999
             if len(rHost) > 0 and len(rPassword) > 0 and rServerID > -1:
                 os.system("clear")
-                info("IP Address: %s" %  getIP(),"Admin Panel Port: %s" % admin,"Client Panel Port: %s" % client,"Streaming Port: %s"% streaming,col.WARNING)
+                print logo
+                info("IP Address: %s" %  getIP(),"Admin Panel Port: %s" % admin,"Client Panel Port: %s" % client,"Streaming Port: %s"% streaming)
                 printd("Start installation? Y/N", col.WARNING)
                 if raw_input("  ").upper() == "Y":
                     print " "
