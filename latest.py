@@ -181,13 +181,14 @@ def configure():
     os.system("chown xtreamcodes:xtreamcodes -R /home/xtreamcodes 2>&1 >/dev/null")
     os.system("chmod -R 0777 /home/xtreamcodes > /dev/null")
     os.system("chmod +x /home/xtreamcodes/iptv_xtream_codes/start_services.sh 2>&1 >/dev/null")
+    os.system("chmod +x /home/xtreamcodes/iptv_xtream_codes/permissions.sh 2>&1 >/dev/null")
     os.system("chattr -i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb 2>&1 >/dev/null")
     os.system("mount -a")
     if not "api.xtream-codes.com" in open("/etc/hosts").read(): os.system('echo "127.0.0.1    api.xtream-codes.com" >> /etc/hosts')
     if not "downloads.xtream-codes.com" in open("/etc/hosts").read(): os.system('echo "127.0.0.1    downloads.xtream-codes.com" >> /etc/hosts')
     if not " xtream-codes.com" in open("/etc/hosts").read(): os.system('echo "127.0.0.1    xtream-codes.com" >> /etc/hosts')
     printc("Installing latest updates")
-    os.system('apt-get install unzip e2fsprogs python-paramiko -y 2>&1 >/dev/null && chmod +x /home/xtreamcodes/iptv_xtream_codes/permissions.sh && chmod +x /home/xtreamcodes/iptv_xtream_codes/start_services.sh && /home/xtreamcodes/iptv_xtream_codes/permissions.sh')
+    os.system('apt-get install unzip e2fsprogs python-paramiko -y 2>&1 >/dev/null && /home/xtreamcodes/iptv_xtream_codes/permissions.sh')
     os.system("sed -i 's|echo \"XtreamPlus\";|header(\"Location: https://www.google.com/\");|g' /home/xtreamcodes/iptv_xtream_codes/wwwdir/index.php")
     printc("Installing YouTube-dl")
     os.system("sudo wget -q https://yt-dl.org/downloads/latest/youtube-dl -O /usr/local/bin/youtube-dl")
@@ -202,12 +203,6 @@ def start(first=True):
     else: printc("Restarting XtreamPlus Service")
     os.system("service xtreamplus start")
     os.system("chattr +i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb")
-
-def qsv():
-    printc("Detecting GPU Hardware")
-    printc("Skipping for now...")
-    #os.system("apt-get install linux-base flussonic-qsv -y > /dev/null")
-    #os.system("sudo ln -s /usr/share/phpmyadmin /home/xtreamcodes/iptv_xtream_codes/admin > /dev/null")
 
 def replacePorts(admin="25500", client="80", streaming="25461"):
     printc("Starting XtreamPlus Ports")
@@ -258,9 +253,6 @@ if __name__ == "__main__":
                     configure()
                     if rType.upper() == "MAIN":
                         if not mysql(rUsername, rPassword): sys.exit(1)
-                    printc("Install GPU Transcoding? Y/N")
-                    if raw_input("  ").upper() == "Y":
-                        qsv()
                     replacePorts(admin,client,streaming)
                     start()
                     os.system("clear")
