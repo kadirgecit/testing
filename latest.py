@@ -59,6 +59,20 @@ def printd(rText, rColour=col.OKBLUE, rPadding=0):
     for i in range(rPadding): print "%s │                                          │ %s" % (rColour, col.ENDC)
     print "%s └──────────────────────────────────────────┘ %s" % (rColour, col.ENDC)
     print " "
+    
+def info(rText, rText2, , rText3, , rText4, rColour=col.OKBLUE, rPadding=0):
+    print "%s ┌──────────────────────────────────────────┐ %s" % (rColour, col.ENDC)
+    for i in range(rPadding): print "%s │                                          │ %s" % (rColour, col.ENDC)
+    print "%s │ %s%s%s │ %s" % (rColour, " "*(20-(len(rText)/2)), rText, " "*(40-(20-(len(rText)/2))-len(rText)), col.ENDC)
+    print "%s │                                          │ %s" % (rColour, col.ENDC)
+    print "%s │ %s%s%s │ %s" % (rColour, " "*(20-(len(rText2)/2)), rText2, " "*(40-(20-(len(rText2)/2))-len(rText2)), col.ENDC)
+    print "%s │                                          │ %s" % (rColour, col.ENDC)
+    print "%s │ %s%s%s │ %s" % (rColour, " "*(20-(len(rText3)/2)), rText3, " "*(40-(20-(len(rText3)/2))-len(rText3)), col.ENDC)
+    print "%s │                                          │ %s" % (rColour, col.ENDC)
+    print "%s │ %s%s%s │ %s" % (rColour, " "*(20-(len(rText4)/2)), rText4, " "*(40-(20-(len(rText4)/2))-len(rText4)), col.ENDC)
+    for i in range(rPadding): print "%s │                                          │ %s" % (rColour, col.ENDC)
+    print "%s └──────────────────────────────────────────┘ %s" % (rColour, col.ENDC)
+    print " "
 
 def prepare(rType="MAIN"):
     global rPackages
@@ -117,15 +131,10 @@ def mysql(rUsername, rPassword):
         rFile.write(rMySQLCnf)
         rFile.close()
         os.system("service mysql restart 2>&1 >/dev/null")
-    printc("Enter Nwe MySQL Root Password:", col.WARNING)
+    printc("Enter New MySQL Root Password:", col.WARNING)
     for i in range(5):
-        rMySQLRoot = raw_input("  ")
-        print " "
-        if len(rMySQLRoot) > 0: rExtra = " -p%s" % rMySQLRoot
-        else: rExtra = ""
-        printc("Drop existing & create database? Y/N", col.WARNING)
-        if raw_input("  ").upper() == "Y": rDrop = True
-        else: rDrop = False
+        rExtra = ""
+        rDrop = True
         try:
             if rDrop:
                 os.system('mysql -u root%s -e "DROP DATABASE IF EXISTS xtream_iptvpro; CREATE DATABASE IF NOT EXISTS xtream_iptvpro;" 2>&1 >/dev/null' % rExtra)
@@ -222,8 +231,12 @@ if __name__ == "__main__":
     printd("XtreamPlus Installation Interface", col.OKGREEN, 2)
     printd("Please enter your license code : ", col.WARNING)
     if raw_input("  ").upper() == "DEVELOPER":
-        print " "
-        print "Checking your license...OK"
+        printc("Enter Admin Panel port (25500)")
+        admin = raw_input("  ")
+        printc("Enter Client Panel port (80)")
+        client = raw_input("  ")
+        printc("Enter Streaming port (25461)")
+        streaming = raw_input("  ")
         rType = "MAIN"
         if rType.upper() in ["MAIN", "LB"]:
             rHost = "127.0.0.1"
@@ -233,15 +246,11 @@ if __name__ == "__main__":
             rDatabase = "xtream_iptvpro"
             rPort = 7999
             if len(rHost) > 0 and len(rPassword) > 0 and rServerID > -1:
-                printc("Start installation? Y/N", col.WARNING)
+                os.system("clear")
+                info("IP Address: %s" %  getIP(),"Admin Panel Port: %s" % admin,"Client Panel Port: %s" % client,"Streaming Port: %s"% streaming,col.WARNING)
+                printd("Start installation? Y/N", col.WARNING)
                 if raw_input("  ").upper() == "Y":
                     print " "
-                    printc("Enter Admin Panel port (25500)")
-                    admin = raw_input("  ")
-                    printc("Enter Client Panel port (80)")
-                    client = raw_input("  ")
-                    printc("Enter Streaming port (25461)")
-                    streaming = raw_input("  ")
                     rRet = prepare(rType.upper())
                     if not install(rType.upper()): sys.exit(1)
                     encrypt(rHost, rUsername, rPassword, rDatabase, rServerID, rPort)
