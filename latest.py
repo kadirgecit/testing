@@ -60,7 +60,7 @@ def printd(rText, rColour=col.OKBLUE, rPadding=0):
     print "%s └──────────────────────────────────────────┘ %s" % (rColour, col.ENDC)
     print " "
     
-def info(rText, rText2, , rText3, , rText4, rColour=col.OKBLUE, rPadding=0):
+def info(rText, rText2, rText3, rText4, rColour=col.OKBLUE, rPadding=0):
     print "%s ┌──────────────────────────────────────────┐ %s" % (rColour, col.ENDC)
     for i in range(rPadding): print "%s │                                          │ %s" % (rColour, col.ENDC)
     print "%s │ %s%s%s │ %s" % (rColour, " "*(20-(len(rText)/2)), rText, " "*(40-(20-(len(rText)/2))-len(rText)), col.ENDC)
