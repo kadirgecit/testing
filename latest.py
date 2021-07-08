@@ -263,4 +263,4 @@ if __name__ == "__main__":
                     printa("Please store your MySQL password!", "MySQL password : %s" % rPassword)
             else: printc("Installation cancelled", col.FAIL)
         else: printc("Invalid entries", col.FAIL)
-   else: printc("Invalid installation type", col.FAIL)
+    else: printc("Invalid installation type", col.FAIL)
