@@ -224,43 +224,43 @@ if __name__ == "__main__":
     print logo
     print " "
     printd("XtreamPlus Installation Interface", col.OKGREEN, 2)
-        printc("Enter Admin Panel port (25500)")
-        admin = raw_input("  ")
-        printc("Enter Client Panel port (80)")
-        client = raw_input("  ")
-        printc("Enter Streaming port (25461)")
-        streaming = raw_input("  ")
-        rType = "MAIN"
-        if rType.upper() in ["MAIN", "LB"]:
-            rHost = "127.0.0.1"
-            rPassword = generate()
-            rServerID = 1
-            rUsername = "user_iptvpro"
-            rDatabase = "xtream_iptvpro"
-            rPort = 7999
-            if len(rHost) > 0 and len(rPassword) > 0 and rServerID > -1:
+    printc("Enter Admin Panel port (25500)")
+    admin = raw_input("  ")
+    printc("Enter Client Panel port (80)")
+    client = raw_input("  ")
+    printc("Enter Streaming port (25461)")
+    streaming = raw_input("  ")
+    rType = "MAIN"
+    if rType.upper() in ["MAIN", "LB"]:
+        rHost = "127.0.0.1"
+        rPassword = generate()
+        rServerID = 1
+        rUsername = "user_iptvpro"
+        rDatabase = "xtream_iptvpro"
+        rPort = 7999
+        if len(rHost) > 0 and len(rPassword) > 0 and rServerID > -1:
+            os.system("clear")
+            print logo
+            info("IP Address: %s" %  getIP(),"Admin Panel Port: %s" % admin,"Client Panel Port: %s" % client,"Streaming Port: %s"% streaming)
+            printd("Start installation? Y/N", col.WARNING)
+            if raw_input("  ").upper() == "Y":
+                print " "
+                rRet = prepare(rType.upper())
+                if not install(rType.upper()): sys.exit(1)
+                encrypt(rHost, rUsername, rPassword, rDatabase, rServerID, rPort)
+                configure()
+                if rType.upper() == "MAIN":
+                    if not mysql(rUsername, rPassword): sys.exit(1)
+                replacePorts(admin,client,streaming)
+                start()
                 os.system("clear")
                 print logo
-                info("IP Address: %s" %  getIP(),"Admin Panel Port: %s" % admin,"Client Panel Port: %s" % client,"Streaming Port: %s"% streaming)
-                printd("Start installation? Y/N", col.WARNING)
-                if raw_input("  ").upper() == "Y":
-                    print " "
-                    rRet = prepare(rType.upper())
-                    if not install(rType.upper()): sys.exit(1)
-                    encrypt(rHost, rUsername, rPassword, rDatabase, rServerID, rPort)
-                    configure()
-                    if rType.upper() == "MAIN":
-                        if not mysql(rUsername, rPassword): sys.exit(1)
-                    replacePorts(admin,client,streaming)
-                    start()
-                    os.system("clear")
-                    print logo
-                    print " "
-                    printd("XtreamPlus Installation Completed!", col.OKGREEN, 2)
-                    printa("Admin UI: http://%s:%s" % (getIP(),admin), "Username: admin / Password: admin")
-                    printd("Client UI: http://%s" % getIP())
-                    if rType.upper() == "MAIN":
-                        printa("Please store your MySQL password!", "MySQL password : %s" % rPassword)
-                else: printc("Installation cancelled", col.FAIL)
-            else: printc("Invalid entries", col.FAIL)
-        else: printc("Invalid installation type", col.FAIL)
+                print " "
+                printd("XtreamPlus Installation Completed!", col.OKGREEN, 2)
+                printa("Admin UI: http://%s:%s" % (getIP(),admin), "Username: admin / Password: admin")
+                printd("Client UI: http://%s" % getIP())
+                if rType.upper() == "MAIN":
+                    printa("Please store your MySQL password!", "MySQL password : %s" % rPassword)
+            else: printc("Installation cancelled", col.FAIL)
+        else: printc("Invalid entries", col.FAIL)
+   else: printc("Invalid installation type", col.FAIL)
