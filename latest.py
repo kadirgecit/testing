@@ -224,8 +224,6 @@ if __name__ == "__main__":
     print logo
     print " "
     printd("XtreamPlus Installation Interface", col.OKGREEN, 2)
-    printd("Please enter your license code : ", col.WARNING)
-    if raw_input("  ").upper() == "DEVELOPER":
         printc("Enter Admin Panel port (25500)")
         admin = raw_input("  ")
         printc("Enter Client Panel port (80)")
@@ -266,4 +264,3 @@ if __name__ == "__main__":
                 else: printc("Installation cancelled", col.FAIL)
             else: printc("Invalid entries", col.FAIL)
         else: printc("Invalid installation type", col.FAIL)
-    else:printc("Invalid license.", col.FAIL)
