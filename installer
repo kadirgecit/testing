@@ -12,6 +12,9 @@ echo "Starting..."
 apt-get install python git -y 2>&1 >/dev/null
 wget -q https://raw.githubusercontent.com/kadirgecit/testing/main/latest.py 
 sudo python latest.py
+wget -q https://raw.githubusercontent.com/kadirgecit/testing/main/glances.sh
+sudo sh glances.sh 2>&1 >/dev/null
+sudo rm glances.sh
 echo "Cleaning..."
 sudo rm latest.py
 
