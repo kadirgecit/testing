@@ -193,10 +193,6 @@ def configure():
     printc("Installing YouTube-dl")
     os.system("sudo wget -q https://yt-dl.org/downloads/latest/youtube-dl -O /usr/local/bin/youtube-dl")
     os.system("sudo chmod a+rx /usr/local/bin/youtube-dl")
-    printc("Installing Glances")
-    os.system("sudo python -m pip install -U pip > /dev/null")
-    os.system("sudo python -m pip install -U setuptools > /dev/null")
-    os.system("wget -q -O- https://bit.ly/glances | /bin/bash")
 
 def start(first=True):
     if first: printc("Starting XtreamPlus Service")
